@@ -1,21 +1,24 @@
- import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { View, ScrollView } from 'react-native';
 import animalService from '../../services/animalService';
 import { Card, Text, IconButton } from 'react-native-paper';
+import { currentUser } from '../../config/firebase/autenticacao';
 
 export default function MeusPets({ navigation }) {
 
     const [animais, setAnimais] = useState([]);
+    const [animaisId, setAnimaisId] = useState([]);
 
     useEffect(() => {
         navigation.setOptions({
             headerRight: () => <IconButton icon="magnify" color="#434343" size={30} onPress={() => console.log('Pressed')} />
         });
-        animalService.getAnimals().then((res) => setAnimais(res));
+        animalService.getMyAnimals(currentUser().uid).then((res) => setAnimais(res));
         console.log(animais);
-    }, []);
 
-    //const containerStyle = { backgroundColor: 'white', padding: 20 };
+        animalService.getIdAnimal().then((res) => setAnimaisId(res));
+        console.log(animaisId);
+    }, []);
 
     return (
         <ScrollView>
@@ -29,11 +32,21 @@ export default function MeusPets({ navigation }) {
                     }/>
                     <Card.Cover source={{ uri: animal.foto }} />
                     <Card.Content>
-                        <Text style={{fontSize: 18, textAlign: 'center', marginTop: 7}} >X NOVOS INTERASSADOS</Text>
-                        {/* Funcao no service para contar a quantidade de interesados no animal */}
+                        <Text style={{fontSize: 18, textAlign: 'center', marginTop: 7}} name="aqui" > X NOVOS INTERASSADOSS</Text>
+                        <IconButton style={{margin: 0}} icon="information" size={25} onPress={() => navigation.navigate('Interessados', { animalId: animaisId[index] })} />
                     </Card.Content>
                 </Card>
             ))}
         </ScrollView>
     );
 }
+/*
+async function buscaInteressados(idAnimal) {
+    const listaInteressados = query(collection(db, 'adocao'),  where("ID", "==", idAnimal));
+    const querySnapshot = await getDocs(listaInteressados);
+    const interessados = querySnapshot.docs.map(doc => doc.data());
+    console.log("Lista de pessoas interessadas:", interessados);
+
+    return "0";
+}
+*/

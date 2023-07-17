@@ -1,6 +1,6 @@
 import { db } from '../config/firebase/firebase';
 import { currentUser } from '../config/firebase/autenticacao';
-import { collection, addDoc, doc, updateDoc, getDoc, setDoc } from 'firebase/firestore';
+import { query, collection, addDoc, doc, updateDoc, getDocs, setDoc, where } from 'firebase/firestore';
 
 async function sendPushNotification(message) {
     /* const message = {
@@ -43,6 +43,22 @@ const usuarioService = {
         } else {
             console.log("Usuario nao encontrado");
         }
+    },
+    async buscaInteressados(idAnimal) {
+        const q1 = query(collection(db, "adocao"), where("idAnimal", "==", idAnimal));
+        const querySnapshot = await getDocs(q1);
+        const listaAdocao = querySnapshot.docs.map(doc => doc.data());
+
+        const listaInteressados = []
+
+        for (var interessado in listaAdocao) {
+            const user = listaAdocao[interessado].idInteressado;
+            const q2 = query(collection(db, "usuarios"), where("id", "==", user));
+            const querySnapshot2 = await getDocs(q2);
+            listaInteressados.push(querySnapshot2.docs.map(doc => doc.data())[0]);
+        }
+
+        return listaInteressados;
     }
 }
 

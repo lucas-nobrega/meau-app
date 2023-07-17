@@ -11,6 +11,7 @@ import Introducao from '../components/Introducao/Introducao';
 import MeusPets from '../components/MeusPets';
 import DetalheAnimal from '../components/DetalheAnimal';
 import Interessados from '../components/Interessados';
+import ListaPets from '../components/ListaAdocao';
 import { IconButton } from 'react-native-paper';
 
 const Drawer = createDrawerNavigator();
@@ -45,6 +46,7 @@ export function RoutesLogged() {
                     <Drawer.Screen name='Tela Erro Autorizacao' component={TelaErroAutorizacao}/>
                     <Drawer.Screen name="Interessados" component={Interessados} options={{ title: 'Interessados', headerStyle: { backgroundColor: '#cfe9e5' } }} />
                     <Drawer.Screen name='Meus Pets' component={MeusPets} options={{ title: 'Meus Pets', headerStyle: { backgroundColor: '#88c9bf' } }} />
+                    <Drawer.Screen name='Lista Pets' component={ListaPets} options={{ title: 'Lista Pets', headerStyle: { backgroundColor: '#88c9bf' } }} />
                 </Drawer.Navigator>
             </NavigationContainer>
         </SafeAreaProvider>

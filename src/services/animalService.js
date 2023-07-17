@@ -1,5 +1,5 @@
 import { db } from '../config/firebase/firebase';
-import { query, collection, getDocs, addDoc } from 'firebase/firestore';
+import { query, collection, getDocs, addDoc, where } from 'firebase/firestore';
 
 const animalService = {
     async getAnimals() {
@@ -12,7 +12,9 @@ const animalService = {
     //PEGAR ANIMAIS QUE PODER SER ADOTADOS E QUE NÃO SÃO DO USUÁRIO
     // Documentação: https://firebase.google.com/docs/firestore/query-data/queries?hl=pt&authuser=0
     async getAnimalsAdoption(userId) {
-        const q = query(collection(db, "animais"), where("paraAdocao", "==", true), where("respoensavelId", "!=", userId));
+        //const q = query(collection(db, "animais"), where("paraAdocao", "==", true), where("respoensavelId", "!=", userId));
+        // Como pegar o ID do usuário
+        const q = query(collection(db, "animais"), where("paraAdocao", "==", true));
         const querySnapshot = await getDocs(q);
         const animalsAdoption = querySnapshot.docs.map(doc => doc.data());
         console.log("Animais para adoção:", animalsAdoption);
@@ -20,10 +22,10 @@ const animalService = {
     },
     //PEGAR ANIMAIS QUE TENHAM O MEU RESPONSAVELID
     async getMyAnimals(userId) {
-        const q = query(collection(db, "animais"), where("respoensavelId", "==", userId));
+        const q = query(collection(db, "animais"), where("responsavelId", "==", userId));
         const querySnapshot = await getDocs(q);
         const myAnimals = querySnapshot.docs.map(doc => doc.data());
-        console.log("Meus animais:", myAnimals);
+        //console.log("Meus animais:", myAnimals);
         return myAnimals;
     },
     async createAnimal(animal) {
@@ -35,6 +37,13 @@ const animalService = {
         const querySnapshot = await getDocs(q);
         const animals = querySnapshot.docs.map(doc => doc.data());
         return animals.find(animal => animal.id === id);
+    },
+    async getIdAnimal() {
+        const q = query(collection(db, "animais"));
+        const querySnapshot = await getDocs(q);
+        const animalsId = querySnapshot.docs.map(doc => doc.id);
+        console.log(animalsId);
+        return animalsId;
     }
 }
 

@@ -1,52 +1,35 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { View, SafeAreaView, Text, Image, StyleSheet } from 'react-native';
-import Button from 'react-native-paper';
+import { useState, useEffect } from 'react';
+import { View, ScrollView } from 'react-native';
+import usuarioService from '../../services/usuarioService';
+import { Card, Text, IconButton } from 'react-native-paper';
+import { currentUser } from '../../config/firebase/autenticacao';
 
-export default function Interessados({ navigation }) {
+export default function Interessados({ route, navigation }) {
 
     const [loading, setLoading] = useState(false);
+    const [interessados, setInteressados] = useState([]);
+    //const { animalId } = route.params;
 
     useEffect(() => {
-        //Pegar os interessados do animal
+        navigation.setOptions({
+            headerRight: () => <IconButton icon="magnify" color="#434343" size={30} onPress={() => console.log('Pressed')} />
+        });
+        //usuarioService.buscaInteressados(animalId);
+        usuarioService.buscaInteressados("Gsj8AEBwB4PgGD8H7iCT").then((res) => setInteressados(res));
     }, []);
+
     return (
-        <SafeAreaView style={{ marginTop: 64 }}>
-            <View style={styles.perfil}>
-                <Image source={require('../../../assets/fotoperfil.png')} style={styles.image} />
-                <Text styles={styles.text}>Nome do Interessado</Text>
-                <Text styles={styles.text}>XX anos</Text>
-            </View>
-            <View style={styles.perfil}>
-                <Image source={require('../../../assets/fotoperfil.png')} style={styles.image} />
-                <Text styles={styles.text}>Nome do Interessado</Text>
-                <Text styles={styles.text}>XX anos</Text>
-            </View>
-            <View style={styles.perfil}>
-                <Image source={require('../../../assets/fotoperfil.png')} style={styles.image} />
-                <Text styles={styles.text}>Nome do Interessado</Text>
-                <Text styles={styles.text}>XX anos</Text>
-            </View>
-        </SafeAreaView>
+        <ScrollView>
+            <Text style={{fontSize: 18, textAlign: 'center', marginTop: 7}} name="aqui" > X NOVOS INTERASSADOSS</Text>
+            { interessados?.map((interessado, index) => (
+                <Card key={index} style={{ margin: 16 }}>
+                    <Card.Title style={{ flexDirection: 'row', justifyContent: 'space-between', backgroundColor: '#cfe9e5' }} title={
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
+                            <Text style={{ fontSize: 18, fontWeight: '500', color: '#434343'}}>{interessado.nome}</Text>
+                        </View>
+                    }/>
+                </Card>
+            )) }
+        </ScrollView>
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-    },
-    perfil: {
-        flexDirection: 'col',
-        alignItems: 'center',
-        width: '100%',
-        marginBottom: 16
-    },
-    image: {
-        width: 50,
-        height: 50,
-        borderRadius: 50
-    },
-    text: {
-        fontSize: '18px',
-        fontWeight: '500',
-        color: '#434343'
-    }
-});
