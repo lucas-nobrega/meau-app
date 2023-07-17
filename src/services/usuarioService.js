@@ -57,7 +57,7 @@ const usuarioService = {
             const querySnapshot2 = await getDocs(q2);
             listaInteressados.push(querySnapshot2.docs.map(doc => doc.data())[0]);
         }
-
+        console.log(listaInteressados)
         return listaInteressados;
     }
 }
