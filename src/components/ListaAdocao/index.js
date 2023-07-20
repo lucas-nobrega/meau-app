@@ -13,7 +13,7 @@ export default function ListaPets({ navigation }) {
             headerRight: () => <IconButton icon="magnify" color="#434343" size={30} onPress={() => console.log('Pressed')} />
         });
         animalService.getAnimalsAdoption(currentUser().uid).then((res) => setAnimais(res));
-        console.log(animais);
+        
     }, []);
     //const containerStyle = { backgroundColor: 'white', padding: 20 };
 
@@ -30,10 +30,9 @@ export default function ListaPets({ navigation }) {
                                 </View>
                             }/>
                             <Card.Cover source={{ uri: animal.foto }} />
-                            <Card.Content>
+                            {/* <Card.Content>
                                 <Text style={{fontSize: 18, textAlign: 'center', marginTop: 7}} >X NOVOS INTERASSADOS</Text>
-                                {/* Funcao no service para contar a quantidade de interesados no animal */}
-                            </Card.Content>
+                            </Card.Content> */}
                         </Card>
                 })}
             </View>

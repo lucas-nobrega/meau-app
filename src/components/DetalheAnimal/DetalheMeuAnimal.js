@@ -10,7 +10,7 @@ import { currentUser } from '../../config/firebase/autenticacao';
 
 export default function DetalheMeuAnimal({ route, navigation }) {
 
-    const { animal } = route.params;
+    const { animal, animalId } = route.params;
    
     useEffect(() => {
         navigation.setOptions({ 
@@ -66,8 +66,8 @@ export default function DetalheMeuAnimal({ route, navigation }) {
                     <CampoInfo label={"Mais sobre " + animal.nome} value={animal.historia} />
                 </View>
                 <View style={{ flexDirection: 'row', justifyContent: 'center'}}>
-                    <Button mode='contained' buttonColor='#88c9bf' textColor='#757575' onPress={() => mudarDono(animal.responsavelId, currentUser() )}>VER INTERESSADOS</Button>
-                    <Button mode='contained' buttonColor='#88c9bf' textColor='#757575' onPress={() => removerDono(animal.responsavelId)}>REMOVER PET</Button>
+                    <Button mode='contained' buttonColor='#88c9bf' textColor='#757575' onPress={() => navigation.navigate('Interessados' , {animalId: animalId, responsavelId: animal.responsavelId})}>VER INTERESSADOS</Button>
+                    <Button mode='contained' buttonColor='#88c9bf' textColor='#757575' onPress={() => removerAnimal(animal.responsavelId)}>REMOVER PET</Button>
                 </View>
             </View>
         </ScrollView>
@@ -134,8 +134,6 @@ async function mudarDono(idListagem, novoDono) {
   
     
 }
-
-
 
 async function removerDono(idListagem) {
     console.log('Responsavel ID');

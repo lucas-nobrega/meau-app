@@ -27,7 +27,7 @@ export default function FinalizarAdocao({ navigation }) {
                     values.foto = image;
                     values.paraAdocao = true;
                     values.responsavelId = currentUser().uid;
-                    animalService.createAnimal(values).then((res) => console.log(res));
+                    animalService.createAnimal(values).then((res) => {});
                 }}
                 
             >

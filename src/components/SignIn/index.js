@@ -55,7 +55,7 @@ export default function SignIn({ navigation }) {
     });
 
     responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-      console.log(response);
+      //console.log(response);
     });
 
     return () => {
@@ -70,7 +70,7 @@ export default function SignIn({ navigation }) {
     <SafeAreaView style={{ marginTop: 64 }}>
       <View>
         <Formik
-          initialValues={{ email: 'lucas@gmail.com', senha: '123456' }}
+          initialValues={{ email: 'gustavo@gmail.com', senha: '123456' }}
           onSubmit={(values) => {
             //setLoading(true);
             //console.log("values: ", values)
