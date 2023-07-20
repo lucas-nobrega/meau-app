@@ -1,6 +1,6 @@
 import { db } from '../config/firebase/firebase';
 import { currentUser } from '../config/firebase/autenticacao';
-import { query, collection, addDoc, doc, updateDoc, getDocs, setDoc, where } from 'firebase/firestore';
+import { query, collection, addDoc, doc, updateDoc, getDocs, setDoc, where, deleteDoc } from 'firebase/firestore';
 
 async function sendPushNotification(message) {
     /* const message = {
@@ -28,7 +28,7 @@ const usuarioService = {
         // DEPOIS QUE O USUARIO ENTRAR NA LISTA DE INTERESSADOS
         // get user expoPushToken by animal.responsavelId
         const docRef = doc(db, "usuarios", animal.responsavelId);
-        const docSnap = await getDoc(docRef);
+        const docSnap = await getDocs(docRef);
         if (docSnap.exists()) {
             if (docSnap.data().expoPushToken) {
                 // send notification to user
@@ -59,6 +59,40 @@ const usuarioService = {
         }
         console.log(listaInteressados)
         return listaInteressados;
+    },
+    async insereInteressados(idAnimal) {
+        console.log("idAnimal: ", idAnimal);
+        try {
+            const message = {
+                Resposta: false,
+                idAnimal: idAnimal,
+                idInteressado: currentUser().uid,
+            };
+            await addDoc(collection(db, "adocao"), message);
+        } catch (error) {
+            console.error("Error adding document: ", error);
+        }
+        
+    },
+    async removeInteressados(animalId, idInteressado) {
+        try {
+            // Obtém a referência para o documento na coleção 'animais' com o ID especificado
+            const chatColRef = collection(db, "adocao");
+            const q = query(
+                chatColRef,
+                where('idInteressado', '==', idInteressado),
+                where('idAnimal', '==', animalId),
+            );
+            const querySnapshot = await getDocs(q);
+
+            querySnapshot.forEach((doc) => {
+                deleteDoc(doc.ref);
+            });
+
+        } catch (error) {
+            console.error('Erro ao buscar o campo responsavelId:', error);
+            return null;
+        }
     }
 }
 

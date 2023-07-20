@@ -145,10 +145,6 @@ export const currentUser = () => {
     return auth.currentUser;
 }
 
-export const userId = () => {
-    return auth.uid;
-}
-
 export const isLogged = () => {
     const user = currentUser();
     if (user) {

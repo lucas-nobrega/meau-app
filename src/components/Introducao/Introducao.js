@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Pressable, Image, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, View, Pressable, Image, SafeAreaView, ScrollView } from 'react-native';
 import { useState, useEffect } from 'react';
 import { auth } from '../../config/firebase/firebase';
 import { currentUser } from '../../config/firebase/autenticacao';
@@ -16,6 +16,7 @@ export default function Intruducao({ navigation }) {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
+    <ScrollView>
       <View style={styles.container}>
 
         <Text style={{
@@ -36,7 +37,7 @@ export default function Intruducao({ navigation }) {
         <View style={styles.footerContainer}>
           <View style={styles.buttonContainer}>
             <Pressable style={styles.button} onPress={() => alert('Click.')}>
-              <Text style={styles.buttonLabel}>ADOTAR</Text>
+              <Text style={styles.buttonLabel} onPress={() => navigation.navigate('Lista Pets')}>ADOTAR</Text>
             </Pressable>
           </View>
           <View style={styles.buttonContainer}>
@@ -57,6 +58,7 @@ export default function Intruducao({ navigation }) {
         </View>
 
       </View>
+    </ScrollView>
     </SafeAreaView>
   );
 }

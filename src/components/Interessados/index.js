@@ -11,8 +11,6 @@ export default function Interessados({ route, navigation }) {
     const [loading, setLoading] = useState(false);
     const [interessados, setInteressados] = useState([]);
     const { animalId, responsavelId } = route.params;
-    console.log(animalId);
-    
 
     useEffect(() => {
         navigation.setOptions({
@@ -22,14 +20,26 @@ export default function Interessados({ route, navigation }) {
         usuarioService.buscaInteressados(animalId).then((res) => setInteressados(res));
     }, []);
 
-    const handlerAdocao = async (donoAtualId, novoDonoId) => {
-        animalService.mudarDono(donoAtualId, novoDonoId)
+    const handlerAdocao = async (animalId, idInteressado) => {
+        animalService.mudarDono(animalId, idInteressado)
             .then(() => {
                 console.log('Mudou o dono');
                 navigation.navigate('Meus Pets');
             })
             .catch((error) => {
                 console.log('Erro ao mudar o dono');
+                console.log(error);
+            });
+    }
+    const handlerRecusar = async (donoAtualId, novoDonoId) => {
+        usuarioService.removeInteressados(donoAtualId, novoDonoId)
+            .then(() => {
+                console.log('Recusou o dono');
+                usuarioService.buscaInteressados(animalId).then((res) => setInteressados(res));
+                navigation.navigate('Meus Pets');
+            })
+            .catch((error) => {
+                console.log('Erro ao recusar o dono');
                 console.log(error);
             });
     }
@@ -54,7 +64,7 @@ export default function Interessados({ route, navigation }) {
                     </Card.Content>
                     <Card.Actions>
                         <Button onPress={() => handlerAdocao(responsavelId, interessado.id)}>Adotar</Button>
-                        <Button onPress={() => alert('Click Recusar')}>Recusar</Button>
+                        <Button onPress={() => handlerRecusar(animalId, interessado.id)}>Recusar</Button>
                     </Card.Actions>
                 </Card>
             )) }
@@ -79,64 +89,3 @@ const styles = StyleSheet.create({
         fontSize: 12,
       },
   });
-
-async function mudarDono(idListagem, novoDono) {
-    console.log('Responsavel ID');
-    console.log(idListagem);
-
-
-    console.log('Usuario Logado');
-    console.log(novoDono)
-
-    const listagemCol = collection(db, 'listagem');
-    const listagemAnimais = collection(db, 'animais');
-
-    //const filtragem = query(collection(db, 'listagem'), where('Responsavel', '==', 'donoexemplo'));
-    //const filtragem2 = query(collection(db, 'listagem'), where('ID', '==', '1'));
-
-
-    const filtragemComposta = query(collection(db, 'listagem'), where('Responsavel', '==', 'donoexemplo'));
-    const filtragemAnimais = query(collection(db, 'animais'), where('responsavelId', '==', idListagem));
-
-    console.log(filtragemComposta);
-
-    const querySnapshot = await getDocs(filtragemComposta);
-    let id = null;
-    querySnapshot.forEach((doc) => {
-        //console.log(doc.id, " => ", doc.data());
-        id = doc.id;
-    });
-    console.log('Listagem ID');
-    console.log(id);
-
-    const querySnapshotAnimais = await getDocs(filtragemAnimais);
-    let id2 = null;
-
-    querySnapshotAnimais.forEach((doc) => {
-        //  console.log(doc.id, " => ", doc.data());
-        id2 = doc.id;
-    });
-    //mudar o responsavel pela listagem do animal 
-
-
-    console.log('AnimalID');
-    console.log(id2);
-
-
-    const docRef = doc(db, "listagem", id);
-    const listagemRef = updateDoc(docRef, { Responsavel: "novoDono" });
-
-
-    const docRef2 = doc(db, "animais", id2);
-    const listagemRef2 = updateDoc(docRef2, { responsavelId: "novoDonoAnimal" });
-
-    console.log(docRef)
-    console.log(docRef2);
-
-
-    return docRef2;
-
-
-
-
-}
