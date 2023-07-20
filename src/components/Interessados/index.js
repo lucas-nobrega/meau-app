@@ -65,6 +65,7 @@ export default function Interessados({ route, navigation }) {
                     <Card.Actions>
                         <Button onPress={() => handlerAdocao(responsavelId, interessado.id)}>Adotar</Button>
                         <Button onPress={() => handlerRecusar(animalId, interessado.id)}>Recusar</Button>
+                        <Button onPress={() => navigation.navigate('Chat', { interessado: interessado })}>Chat</Button>
                     </Card.Actions>
                 </Card>
             )) }

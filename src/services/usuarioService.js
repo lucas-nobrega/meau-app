@@ -45,6 +45,7 @@ const usuarioService = {
         }
     },
     async buscaInteressados(idAnimal) {
+        console.log("idAnimal: ", idAnimal);
         const q1 = query(collection(db, "adocao"), where("idAnimal", "==", idAnimal));
         const querySnapshot = await getDocs(q1);
         const listaAdocao = querySnapshot.docs.map(doc => doc.data());
@@ -57,7 +58,7 @@ const usuarioService = {
             const querySnapshot2 = await getDocs(q2);
             listaInteressados.push(querySnapshot2.docs.map(doc => doc.data())[0]);
         }
-        console.log(listaInteressados)
+        console.log("Lista de pessoas interessadas:", listaInteressados)
         return listaInteressados;
     },
     async insereInteressados(idAnimal) {

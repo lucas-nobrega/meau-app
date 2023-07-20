@@ -14,7 +14,7 @@ import Interessados from '../components/Interessados';
 import ListaPets from '../components/ListaAdocao';
 import { IconButton } from 'react-native-paper';
 import DetalheMeuAnimal from '../components/DetalheAnimal/DetalheMeuAnimal';
-
+import PageChat from '../components/Chat';
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
 
@@ -49,6 +49,7 @@ export function RoutesLogged() {
                     <Drawer.Screen name='Meus Pets' component={MeusPets} options={{ title: 'Meus Pets', headerStyle: { backgroundColor: '#88c9bf' } }} />
                     <Drawer.Screen name='Lista Pets' component={ListaPets} options={{ title: 'Lista Pets', headerStyle: { backgroundColor: '#88c9bf' } }} />
                     <Drawer.Screen name="Detalhe Meu Animal" component={DetalheMeuAnimal} />
+                    <Drawer.Screen name="Chat" component={PageChat} options={{ title: 'Chat', headerStyle: { backgroundColor: '#88c9bf' } }} />
                 </Drawer.Navigator>
             </NavigationContainer>
         </SafeAreaProvider>

@@ -82,98 +82,21 @@ const fetchMessages = async (idInteressado, idDono) => {
   return messageList;
 };
 
-// Função que busca o campo 'responsavelId' no documento com o ID especificado na coleção 'animais'
-const getResponsavelId = async (animalId) => {
-  try {
-    // Obtém a referência para o documento na coleção 'animais' com o ID especificado
-    const animalRef = doc(db, 'animais', animalId);
-    
-    // Obtém os dados do documento
-    const docSnap = await getDoc(animalRef);
-    
-    // Verifica se o documento existe
-    if (docSnap.exists()) {
-      // Retorna o valor do campo 'responsavelId'
-      return docSnap.data().responsavelId;
-    } else {
-      // Caso o documento não exista, retorna null ou algum valor padrão, de acordo com a sua necessidade
-      return null;
-    }
-  } catch (error) {
-    console.error('Erro ao buscar o campo responsavelId:', error);
-    return null;
-  }
-};
 
-// Exemplo de uso da função
-const animalId = 'Gsj8AEBwB4PgGD8H7iCT'; // Substitua pelo ID do documento que deseja procurar
-  getResponsavelId(animalId)
-    .then((responsavelId) => {
-      if (responsavelId) {
-        console.log('Responsável ID:', responsavelId);
-      } else {
-        console.log('Documento não encontrado ou campo responsavelId não definido.');
-      }
-    })
-    .catch((error) => {
-      console.error('Erro ao obter o responsavelId:', error);
-    });
-
-
-const Chat = () => {
+const Chat = (props) => {
+  const Idinteressado = props.idInteressado;
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
   const [userName, setUserName] = useState('');
 
   useEffect(() => {
     // Supondo que você tenha idInteressado e idDono como valores a serem filtrados
-    const idInteressado = currentUser().uid; // substitua pelo valor real
-    const animalId = 'Gsj8AEBwB4PgGD8H7iCT';
-
-    const fetchResponsavelIdAndSendMessage = async () => {
-      try {
-        const responsavelId = await getResponsavelId(animalId);
-        if (responsavelId) {
-          console.log('Responsável ID:', responsavelId);
-          
-        } else {
-          console.log('Documento não encontrado ou campo responsavelId não definido.');
-        }
-  
-        const messageList = await fetchMessages(currentUser().uid, responsavelId);
-        setMessages(messageList);
-      } catch (error) {
-        console.error('Erro ao obter o responsavelId:', error);
-      }
-    };
-
-
-    fetchResponsavelIdAndSendMessage();
-    
+    //const animalId = 'Gsj8AEBwB4PgGD8H7iCT';
+    fetchMessages(Idinteressado, currentUser().uid);
   }, []);
 
   const handleInputChange = text => {
-    setUserName(currentUser().email);
     setNewMessage(text);
-  };
-
-  const handleUserNameChange = text => {
-    
-  };
-
-  const handleSendPress = async () => {
-    const animalId = 'Gsj8AEBwB4PgGD8H7iCT'; // Substitua pelo ID do documento que deseja procurar
-
-    try {
-      const responsavelId = await getResponsavelId(animalId);
-      if (responsavelId) {
-        sendMessage(currentUser().uid, responsavelId);
-      } else {
-        console.log('Documento não encontrado ou campo responsavelId não definido.');
-      }
-    } catch (error) {
-      console.error('Erro ao obter o responsavelId:', error);
-    }
   };
 
   const sendMessage = async (idInteressado, idDono) => {
@@ -186,13 +109,10 @@ const Chat = () => {
     };
     await addDoc(collection(db, "chat"), message);
     setNewMessage('');
-    setUserName('');
-
-
       
     const updatedMessageList = await fetchMessages(idInteressado, idDono);
     setMessages(updatedMessageList);
-
+    console.log('loop');
     
   };
 
@@ -212,11 +132,11 @@ const Chat = () => {
         style={styles.chatInput}
         placeholder="Nova Mensagem"
         value={newMessage}
-        onChangeText={handleInputChange}
+        onChangeText={() => handleInputChange()}
       />
-       <Pressable style={styles.chatButton} onPress={handleSendPress}>
-      <Text style={styles.chatButtonText}>Enviar</Text>
-        </Pressable>
+      <Pressable style={styles.chatButton} onPress={() => sendMessage(Idinteressado, currentUser().uid)}>
+        <Text style={styles.chatButtonText}>Enviar</Text>
+      </Pressable>
     </View>
   );
 };
