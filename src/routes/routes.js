@@ -10,7 +10,10 @@ import CadastroAnimal from '../components/Register/CadastroAnimal';
 import Introducao from '../components/Introducao/Introducao';
 import MeusPets from '../components/MeusPets';
 import DetalheAnimal from '../components/DetalheAnimal';
+import Interessados from '../components/Interessados';
+import ListaPets from '../components/ListaAdocao';
 import { IconButton } from 'react-native-paper';
+import DetalheMeuAnimal from '../components/DetalheAnimal/DetalheMeuAnimal';
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
@@ -42,7 +45,10 @@ export function RoutesLogged() {
                         title: 'Detalhe Animal', headerStyle: { backgroundColor: '#cfe9e5' } }} />
                     <Drawer.Screen name="Cadastro Animal" component={CadastroAnimal} options={{ title: 'Cadastro Animal', headerStyle: { backgroundColor: '#cfe9e5' } }} />
                     <Drawer.Screen name='Tela Erro Autorizacao' component={TelaErroAutorizacao}/>
+                    <Drawer.Screen name="Interessados" component={Interessados} options={{ title: 'Interessados', headerStyle: { backgroundColor: '#cfe9e5' } }} />
                     <Drawer.Screen name='Meus Pets' component={MeusPets} options={{ title: 'Meus Pets', headerStyle: { backgroundColor: '#88c9bf' } }} />
+                    <Drawer.Screen name='Lista Pets' component={ListaPets} options={{ title: 'Lista Pets', headerStyle: { backgroundColor: '#88c9bf' } }} />
+                    <Drawer.Screen name="Detalhe Meu Animal" component={DetalheMeuAnimal} />
                 </Drawer.Navigator>
             </NavigationContainer>
         </SafeAreaProvider>

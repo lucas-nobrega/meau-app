@@ -13,11 +13,11 @@ export default function CampoInfo(props) {
 
 const styles = StyleSheet.create({
     label: {
-        fontSize: '18px',
+        fontSize: 18,
         color: '#589b9b'
     },
     value: {
-        fontSize: '20px',
+        fontSize: 20,
         color: '#757575'
     }
 });

@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Meau",
-    "slug": "Meau",
+    "slug": "meau",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -26,14 +26,24 @@
       "supportsTablet": true
     },
     "android": {
+      "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.anonymous.Meau"
+      "package": "com.anonymous.Meau",
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "81b206d7-6998-465d-88a7-71ddc2e9a34d"
+      }
+    },
+    "owner": "akrasia42"
   }
 }
